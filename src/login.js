@@ -2,6 +2,7 @@ import { Aurelia, inject } from 'aurelia-framework';
 import { AuthService } from "aurelia-authentication";
 import '../styles/signin.css';
 import JSEncrypt from 'jsencrypt';
+import LOGIN_CONFIG from '../login-config';
 
 @inject(AuthService)
 export class Login {
@@ -15,6 +16,19 @@ export class Login {
     
     constructor(authService) {
         this.authService = authService;
+    }
+
+    // Redirect to standalone login page if configured
+    attached() {
+        // Check if we should use standalone login
+        if (LOGIN_CONFIG.mode === 'standalone') {
+            // Use replace() to avoid keeping hash in URL
+            // Get base URL without hash
+            const baseUrl = window.location.origin;
+            const loginUrl = baseUrl + LOGIN_CONFIG.standaloneLoginUrl;
+            window.location.replace(loginUrl);
+            return;
+        }
     }
 
     login() {

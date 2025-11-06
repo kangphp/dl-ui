@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan Liris - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .environment-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-wrapper {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .login-left i {
+            font-size: 80px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .login-left h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .login-left p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 60px 40px;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group label i {
+            margin-right: 5px;
+            color: #667eea;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .remember-me-check {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me label {
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .forgot-password {
+            font-size: 14px;
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-password:hover {
+            color: #764ba2;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn-login i {
+            margin-right: 8px;
+        }
+
+        .message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.show {
+            display: flex;
+            align-items: center;
+        }
+
+        .message i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+        }
+
+        .success-message {
+            background-color: #efe;
+            border: 1px solid #cfc;
+            color: #3c3;
+        }
+
+        .info-message {
+            background-color: #def;
+            border: 1px solid #bdf;
+            color: #369;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            position: relative;
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+            }
+
+            .login-left {
+                padding: 40px 20px;
+            }
+
+            .login-left i {
+                font-size: 60px;
+                margin-bottom: 20px;
+            }
+
+            .login-left h2 {
+                font-size: 24px;
+            }
+
+            .login-right {
+                padding: 40px 20px;
+            }
+
+            .environment-badge {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .loading-content .spinner {
+            width: 40px;
+            height: 40px;
+            border-width: 4px;
+            border-color: #667eea;
+            border-top-color: transparent;
+            margin: 0 auto 15px;
+        }
+
+        .loading-content p {
+            color: #333;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="environment-badge" id="envBadge">DEVELOPMENT</div>
+
+    <div class="login-wrapper">
+        <div class="login-left">
+            <i class="fas fa-shield-alt"></i>
+            <h2>Dan Liris</h2>
+            <p>Enterprise Resource Planning System<br>Secure Access Portal</p>
+        </div>
+
+        <div class="login-right">
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Please sign in to continue</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-circle"></i>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder="Enter your username" 
+                            required 
+                            autofocus
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="remember-me">
+                    <div class="remember-me-check">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span id="btnText">Sign In</span>
+                </button>
+
+                <div class="message error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText">Invalid username or password</span>
+                </div>
+
+                <div class="message success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Login successful! Redirecting...</span>
+                </div>
+
+                <div class="message info-message" id="infoMessage">
+                    <i class="fas fa-info-circle"></i>
+                    <span id="infoText"></span>
+                </div>
+            </form>
+
+            <div class="footer-text">
+                &copy; 2025 Dan Liris. All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Authenticating...</p>
+        </div>
+    </div>
+
+    <!-- JSEncrypt library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsencrypt@3.3.2/bin/jsencrypt.min.js"></script>
+    
+    <script>
+        // ============================================
+        // CONFIGURATION - Change based on environment
+        // ============================================
+        const ENVIRONMENTS = {
+            dev: {
+                name: 'DEVELOPMENT',
+                authUrl: 'https://com-danliris-service-auth-v8-dev.azurewebsites.net/v1/',
+                redirectUrl: window.location.origin + '/index.html' // Full URL untuk avoid hash routing
+            },
+            uat: {
+                name: 'UAT',
+                authUrl: 'https://com-danliris-service-auth-v8-uat.azurewebsites.net/v1/',
+                redirectUrl: window.location.origin + '/index.html' // Full URL untuk avoid hash routing
+            },
+            production: {
+                name: 'PRODUCTION',
+                authUrl: 'https://com-danliris-service-auth-v8.azurewebsites.net/v1/',
+                redirectUrl: window.location.origin + '/index.html' // Full URL untuk avoid hash routing
+            }
+        };
+
+        // Set current environment here
+        const CURRENT_ENV = 'dev'; // Change to 'dev', 'uat', or 'production'
+
+        const CONFIG = {
+            ...ENVIRONMENTS[CURRENT_ENV],
+            LOGIN_ENDPOINT: 'authenticate',
+            PROFILE_ENDPOINT: 'me',
+            PUBLIC_KEY: `-----BEGIN PUBLIC KEY-----MIIBCgKCAQEAyUDO910BLcBrwdscKorajZKQJdR9TNnR/oqNcTpL10C4Ts9JQq4djGlcxdIG09rm23x5r54/eFmthu4lpeSBEPsS9O4ai0SF0mA39n5lvfNzWJ/JNBYswXU0S2BoTKdClbme+Z1hhqwksej+y2r+AzxiUay23Tn/AvIRxmPQg/66lD6zNyTWHOHAowhdOLUF8GagwdNOeCC0BZDdjP7Iyrk0d5XYeffMAcNR2vLTDpreMcjda7fGHbDTu8khsFTpFDwub0Pg96lxbFV9i//dZ7sPl+RpIrrLV9alCuDyz4+86Sl1jVqbwyh4j4XjgYck1CcmDg5cWN5iB9MnHJZaAQIDAQAB-----END PUBLIC KEY-----`
+        };
+
+        // ============================================
+        // DOM Elements
+        // ============================================
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const rememberMeCheckbox = document.getElementById('rememberMe');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const successMessage = document.getElementById('successMessage');
+        const infoMessage = document.getElementById('infoMessage');
+        const infoText = document.getElementById('infoText');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const envBadge = document.getElementById('envBadge');
+
+        // ============================================
+        // Utility Functions
+        // ============================================
+        
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function setLoading(isLoading) {
+            loginBtn.disabled = isLoading;
+            usernameInput.disabled = isLoading;
+            passwordInput.disabled = isLoading;
+            
+            if (isLoading) {
+                btnText.innerHTML = '<div class="spinner"></div> Signing In...';
+                loadingOverlay.classList.add('show');
+            } else {
+                btnText.innerHTML = 'Sign In';
+                loadingOverlay.classList.remove('show');
+            }
+        }
+
+        function hideMessages() {
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            infoMessage.classList.remove('show');
+        }
+
+        function showError(message) {
+            hideMessages();
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+        }
+
+        function showSuccess(message = 'Login successful! Redirecting...') {
+            hideMessages();
+            successMessage.querySelector('span').textContent = message;
+            successMessage.classList.add('show');
+        }
+
+        function showInfo(message) {
+            hideMessages();
+            infoText.textContent = message;
+            infoMessage.classList.add('show');
+        }
+
+        // ============================================
+        // Storage Functions
+        // ============================================
+        
+        function saveToken(token, profile) {
+            localStorage.setItem('aurelia_token', token);
+            if (profile) {
+                localStorage.setItem('aurelia_profile', JSON.stringify(profile));
+            }
+            
+            // Save login timestamp
+            localStorage.setItem('login_timestamp', new Date().toISOString());
+        }
+
+        function getToken() {
+            return localStorage.getItem('aurelia_token');
+        }
+
+        function clearAuth() {
+            localStorage.removeItem('aurelia_token');
+            localStorage.removeItem('aurelia_profile');
+            localStorage.removeItem('login_timestamp');
+        }
+
+        // ============================================
+        // API Functions
+        // ============================================
+        
+        async function getProfile(token) {
+            try {
+                const response = await fetch(CONFIG.authUrl + CONFIG.PROFILE_ENDPOINT, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    return await response.json();
+                }
+                return null;
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+                return null;
+            }
+        }
+
+        function encryptCredentials(username, password) {
+            try {
+                const credentials = {
+                    username: username,
+                    password: password,
+                    nonce: generateUUID(),
+                    timestamp: new Date().toISOString()
+                };
+
+                const encrypt = new JSEncrypt();
+                encrypt.setPublicKey(CONFIG.PUBLIC_KEY);
+                const encrypted = encrypt.encrypt(JSON.stringify(credentials));
+                
+                if (!encrypted) {
+                    throw new Error('Encryption failed');
+                }
+                
+                return encrypted;
+            } catch (error) {
+                console.error('Encryption error:', error);
+                throw new Error('Failed to encrypt credentials');
+            }
+        }
+
+        async function authenticate(username, password) {
+            const authEncrypted = encryptCredentials(username, password);
+
+            const response = await fetch(CONFIG.authUrl + CONFIG.LOGIN_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ authEncrypted })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Authentication failed');
+            }
+
+            return data;
+        }
+
+        // ============================================
+        // Login Handler
+        // ============================================
+        
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+
+            setLoading(true);
+            hideMessages();
+
+            try {
+                // Authenticate
+                const authData = await authenticate(username, password);
+                
+                if (!authData.data) {
+                    throw new Error('No token received');
+                }
+
+                const token = authData.data;
+                
+                // Get user profile
+                showInfo('Fetching user profile...');
+                const profile = await getProfile(token);
+                
+                // Save authentication data
+                saveToken(token, profile);
+                
+                // Handle remember me
+                if (rememberMeCheckbox.checked) {
+                    localStorage.setItem('rememberedUsername', username);
+                } else {
+                    localStorage.removeItem('rememberedUsername');
+                }
+                
+                // Show success and redirect
+                showSuccess(`Welcome back, ${profile?.username || username}!`);
+                
+                setTimeout(() => {
+                    window.location.href = CONFIG.redirectUrl;
+                }, 1500);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showError(error.message || 'Invalid username or password');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // ============================================
+        // Initialization
+        // ============================================
+        
+        function init() {
+            // Set environment badge
+            envBadge.textContent = CONFIG.name;
+            
+            // Load remembered username
+            const rememberedUsername = localStorage.getItem('rememberedUsername');
+            if (rememberedUsername) {
+                usernameInput.value = rememberedUsername;
+                rememberMeCheckbox.checked = true;
+                passwordInput.focus();
+            }
+
+            // Check if already logged in
+            const existingToken = getToken();
+            if (existingToken) {
+                showInfo('Checking existing session...');
+                getProfile(existingToken).then(profile => {
+                    if (profile) {
+                        showInfo('Already logged in. Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = CONFIG.redirectUrl;
+                        }, 1000);
+                    } else {
+                        // Token expired or invalid
+                        clearAuth();
+                        hideMessages();
+                    }
+                });
+            }
+
+            // Add event listeners
+            loginForm.addEventListener('submit', handleLogin);
+
+            // Prevent forgot password default action
+            document.querySelector('.forgot-password').addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Please contact your system administrator to reset your password.');
+            });
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + K to focus username
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    usernameInput.focus();
+                    usernameInput.select();
+                }
+            });
+        }
+
+        // Run initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

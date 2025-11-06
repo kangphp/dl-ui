@@ -5,6 +5,10 @@ export default {
     loginUrl: "authenticate",
     profileUrl: "me",
 
+    // Redirect configuration
+    loginRoute: '/login-advanced.html',
+    loginRedirect: '/',
+    
     authTokenType: "Bearer",
     accessTokenProp: "data",
 

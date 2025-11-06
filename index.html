@@ -8,6 +8,32 @@
     <!-- imported CSS are concatenated and added automatically -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
+    <!-- Auth Check - Redirect to login if not authenticated -->
+    <script>
+      (function() {
+        // Check if user is authenticated before loading the app
+        const token = localStorage.getItem('aurelia_token');
+        
+        // If no token, redirect to login page immediately
+        if (!token) {
+          window.location.replace('/login-advanced.html');
+          return;
+        }
+        
+        // Optional: Validate token format (basic check)
+        if (token.split('.').length !== 3) {
+          // Invalid JWT format, clear and redirect
+          localStorage.removeItem('aurelia_token');
+          localStorage.removeItem('aurelia_profile');
+          window.location.replace('/login-advanced.html');
+          return;
+        }
+        
+        // If token exists, continue loading the app
+        // App will load normally below
+      })();
+    </script>
+    
     <!-- Inline Splash Screen Styles -->
     <style>
       /* Splash Screen Styles */

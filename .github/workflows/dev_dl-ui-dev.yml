@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - dl-ui-dev
 on:
   push:
     branches:
-      - dev
+      - dev-optimize
 
 jobs:
   build-and-deploy:
