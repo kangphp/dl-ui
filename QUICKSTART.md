@@ -29,21 +29,14 @@ npm start
 
 Buka browser:
 ```
-http://localhost:9000
+http://localhost:8080/#/login
 ```
 
-**Yang Akan Terjadi (Optimized!):**
-1. ⚡ Cek token SEBELUM load app bundle (super cepat!)
-2. 🚀 Langsung redirect ke `http://localhost:9000/login-advanced.html` (tanpa hash)
-3. ✅ Muncul halaman login baru dengan desain profesional
-4. 🔐 Login dengan kredensial
-5. ✅ Setelah sukses, redirect ke `http://localhost:9000/index.html`
-6. 🎉 Aplikasi loaded dengan user authenticated
-
-**Benefit:**
-- ✅ Tidak load app.bundle.js jika belum login (hemat bandwidth!)
-- ✅ 10x lebih cepat daripada load Aurelia dulu
-- ✅ Better user experience
+**Yang Akan Terjadi:**
+1. Otomatis redirect ke `/login-advanced.html`
+2. Muncul halaman login baru dengan desain profesional
+3. Login dengan kredensial
+4. Setelah sukses, redirect ke aplikasi utama
 
 ---
 

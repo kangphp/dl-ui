@@ -6,7 +6,7 @@ export default {
     profileUrl: "me",
 
     // Redirect configuration
-    loginRoute: '/login-advanced.html',
+    loginRoute: 'login',
     loginRedirect: '/',
     
     authTokenType: "Bearer",

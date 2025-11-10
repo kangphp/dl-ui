@@ -493,17 +493,17 @@
             dev: {
                 name: 'DEVELOPMENT',
                 authUrl: 'https://com-danliris-service-auth-v8-dev.azurewebsites.net/v1/',
-                redirectUrl: window.location.origin + '/index.html' // Full URL untuk avoid hash routing
+                redirectUrl: '/#' // Redirect ke aplikasi Aurelia
             },
             uat: {
                 name: 'UAT',
                 authUrl: 'https://com-danliris-service-auth-v8-uat.azurewebsites.net/v1/',
-                redirectUrl: window.location.origin + '/index.html' // Full URL untuk avoid hash routing
+                redirectUrl: '/index.html' // Redirect ke aplikasi Aurelia
             },
             production: {
                 name: 'PRODUCTION',
                 authUrl: 'https://com-danliris-service-auth-v8.azurewebsites.net/v1/',
-                redirectUrl: window.location.origin + '/index.html' // Full URL untuk avoid hash routing
+                redirectUrl: '/index.html' // Redirect ke aplikasi Aurelia
             }
         };
 
