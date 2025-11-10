@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - dl-ui-dev
 on:
   push:
     branches:
-      - dev-optimize-1
+      - dev-optomize-1
 
 jobs:
   build-and-deploy:
@@ -32,4 +32,5 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.NEW_DEV_SECRET }}
         package: ./dist
+
 
