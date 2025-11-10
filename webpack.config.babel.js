@@ -112,7 +112,11 @@ let config = generateConfig(
 
     ...(ENV === 'production' || ENV === 'development' ? [
         commonChunksOptimize({ appChunkName: 'app', firstChunk: 'aurelia-bootstrap' }),
-        copyFiles({ patterns: [{ from: 'favicon.ico', to: 'favicon.ico' }] })
+        copyFiles({ patterns: [
+            { from: 'favicon.ico', to: 'favicon.ico' },
+            { from: 'login-advanced.html', to: 'login-advanced.html' },
+            { from: 'login-standalone.html', to: 'login-standalone.html' }
+        ] })
     ] : [
             /* ENV === 'test' */
             generateCoverage({ options: { 'force-sourcemap': true, esModules: true } })
@@ -120,5 +124,18 @@ let config = generateConfig(
 
     ENV === 'production' ?
         uglify({ debug: false, mangle: { except: ['cb', '__webpack_require__'] } }) : {}
-) 
+)
+
+// Add devServer configuration for historyApiFallback
+if (ENV === 'development') {
+    config.devServer = {
+        historyApiFallback: {
+            rewrites: [
+                { from: /^\/login-advanced\.html$/, to: '/login-advanced.html' }
+            ],
+            index: '/index.html'
+        }
+    }
+}
+
 module.exports = stripMetadata(config)

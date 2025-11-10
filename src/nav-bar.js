@@ -25,7 +25,8 @@ export class NavBar {
     }
 
     logout() {
-        this.authService.logout("#/login");
+        //this.authService.logout("#/login");
+        this.authService.logout("login-advanced.html");
     }
 
     changePass(event) {
