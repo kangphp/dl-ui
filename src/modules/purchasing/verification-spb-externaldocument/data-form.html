@@ -1,0 +1,299 @@
+<template>
+  <au-input-form title.bind="title" with.bind="context">
+    <div slot="actions" class="btn-group">
+      <button
+        class="btn btn-danger"
+        click.delegate="context.delete($event)"
+        if.one-way="context.hasDelete"
+      >
+        Hapus
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <au-autocomplete
+          value.bind="SPB"
+          label="Nomor SPB"
+          loader.bind="spbLoader"
+          text.bind="SPBView"
+          placeholder="cari nomor SPB"
+          key="Id"
+          options.bind="controlOptions"
+          read-only.bind="!readOnly"
+        >
+        </au-autocomplete>
+
+        <au-datepicker
+          label="Tanggal Surat Perintah Bayar"
+          value.bind="SPB.date"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-datepicker>
+
+        <au-textbox
+          label="Divisi"
+          value.bind="SPB.division.name"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-textbox
+          label="Supplier"
+          value.bind="SPB.supplier ? SPB.supplier.code + ' - ' + SPB.supplier.name : ''"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-textbox
+          label="Kategori"
+          value.bind="SPB.category ? SPB.category.code + ' - ' + SPB.category.name : ''"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-textbox
+          label="Term Pembayaran"
+          value.bind="SPB.paymentMethod"
+          read-only.bind="true"
+          items.bind="termPaymentOptions"
+          if.bind="SPBIsSelected"
+          change.delegate="paymentMethodChanged($event)"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-textbox
+          label="Mata Uang"
+          value.bind="SPB.currency.code"
+          format="0.00"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-textbox
+          label="No. Invoice"
+          value.bind="SPB.invoiceNo"
+          error.bind="error.invoiceNo"
+          if.bind="SPBIsSelected"
+          read-only.bind="readOnly"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-datepicker
+          label="Tanggal Invoice"
+          value.bind="SPB.invoiceDate"
+          error.bind="error.invoiceDate"
+          read-only.bind="readOnly"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-datepicker>
+
+        <au-datepicker
+          label="Tanggal PIB"
+          value.bind="SPB.vatDate"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-datepicker>
+
+        <au-textbox
+          label="No. PIB"
+          value.bind="SPB.vatNo"
+          format="0.00"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-numeric
+          label="Bea Masuk"
+          value.bind="SPB.importDuty"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-numeric>
+
+        <au-numeric
+          label="PPN"
+          value.bind="SPB.totalVatAmount"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-numeric>
+
+        <au-numeric
+          label="PPH"
+          value.bind="SPB.totalIncomeTaxAmount"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-numeric>
+
+        <au-numeric
+          label="Total SPB"
+          value.bind="totalAmount"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions"
+        >
+        </au-numeric>
+      </div>
+      <div class="col-md-6">
+        <au-textbox
+          label="Apakah kena Pph?"
+          value.bind="SPB.useIncomeTax ? 'Ya' : 'Tidak'"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          change.delegate="useIncomeTaxChanged($event)"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <au-textbox
+          label="Apakah kena Ppn?"
+          value.bind="SPB.useVat ? 'Ya' : 'Tidak'"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          change.delegate="useVatChanged($event)"
+          options.bind="controlOptions"
+        >
+        </au-textbox>
+
+        <!-- <au-multiline
+          label="Keterangan"
+          value.bind="data.remark"
+          placeholder="tambah keterangan"
+          read-only.bind="readOnly"
+          options.bind="controlOptions"
+        >
+        </au-multiline> -->
+
+        <au-autocomplete
+          value.bind="selectedIncomeTax"
+          error.bind="error.incomeTax"
+          label="Pph"
+          loader.bind="incomeTaxLoader"
+          text.bind="incomeTaxView"
+          placeholder="cari pph"
+          key=""
+          read-only.bind="(readOnly || isEdit)"
+          if.bind="data.useIncomeTax"
+          options.bind="controlOptions"
+        >
+        </au-autocomplete>
+
+        <au-autocomplete
+          value.bind="selectedIncomeTax"
+          error.bind="error.incomeTax"
+          label="Pph"
+          loader.bind="incomeTaxLoader"
+          text.bind="incomeTaxView"
+          placeholder="cari pph"
+          key=""
+          read-only.bind="(readOnly || isEdit)"
+          if.bind="SPB.useIncomeTax"
+          options.bind="controlOptions"
+        >
+        </au-autocomplete>
+
+        <numeric
+          label="Rate Pph"
+          value.bind="SPB.incomeTax.rate"
+          error.bind="error.incomeTaxRate"
+          format="0"
+          read-only.bind="true"
+          if.bind="SPB.useIncomeTax"
+          post-fix="%"
+        >
+        </numeric>
+
+        <au-autocomplete
+          value.bind="selectedVatTax"
+          error.bind="error.vatTax"
+          label="PPN"
+          loader.bind="vatTaxLoader"
+          text.bind="vatTaxView"
+          placeholder="cari vat"
+          key=""
+          if.bind="SPB.useVat"
+          change.delegate="selectedVatTaxChanged($event)"
+          read-only.bind="(readOnly || isEdit)"
+          options.bind="controlOptions"
+        >
+        </au-autocomplete>
+
+        <!-- <au-multiline
+          label="Keterangan"
+          value.bind="SPB.remark"
+          read-only.bind="true"
+          if.bind="SPBIsSelected"
+          options.bind="controlOptions">
+        </au-multiline> -->
+      </div>
+    </div>
+
+    <au-collection
+      items.bind="SPB.items"
+      columns.bind="itemsInfoReadOnly.columnsReadOnly"
+      add.bind="itemsInfoReadOnly.onAdd"
+      if.bind="SPBIsSelected"
+      read-only.bind="readOnly"
+      options.one-way="filter"
+      view-model.bind="ItemsCollection"
+      item-template="modules/purchasing/verification-spb-externaldocument/template/spb-item"
+    >
+    </au-collection>
+
+    <!-- Upload section moved to the bottom of the form -->
+    <div class="row" style="margin-top: 20px">
+      <div class="col-md-12">
+        <compose
+          view-model.bind="uploadVm"
+          model.bind="{ onResult: handleUploadResult, onFileSelected: handleFileSelected }"
+        ></compose>
+      </div>
+    </div>
+
+    <!-- Scan result displayed below upload section -->
+    <div class="row" if.bind="showScanJson">
+      <div class="col-md-12">
+        <compose
+          view-model.bind="scanResultVm"
+          model.bind="{ result: scanResult }"
+        ></compose>
+      </div>
+    </div>
+
+    <!-- Tabular view for scan result (header + items toggle) -->
+    <div class="row">
+      <div class="col-md-12">
+        <div if.bind="showScanResultData">
+          <compose
+            view-model.bind="scanResultDataVm"
+            model.bind="{ result: scanResult, key: scanResultDataKey }"
+            strategy="replace-part"
+          >
+          </compose>
+        </div>
+      </div>
+    </div>
+  </au-input-form>
+</template>

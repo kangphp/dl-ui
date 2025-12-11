@@ -1,0 +1,85 @@
+<template>
+  <div if.bind="hasURN" style="margin-top: 10px" ref="urnContainer">
+    <au-table
+      data.bind="urnRows"
+      columns.bind="urnColumns"
+      options.bind="tableOptions"
+      sortable.bind="false"
+      page-size.bind="50"
+    >
+    </au-table>
+  </div>
+
+  <div if.bind="hasPR" style="margin-top: 10px" ref="prContainer">
+    <au-table
+      data.bind="prRows"
+      columns.bind="prColumns"
+      options.bind="tableOptions"
+      sortable.bind="false"
+      page-size.bind="50"
+    >
+    </au-table>
+  </div>
+
+  <div if.bind="hasPO" style="margin-top: 10px" ref="poContainer">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Nomor Purchase Order</th>
+          <th>Grand Total</th>
+          <th style="text-align: center">Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template repeat.for="po of poRows">
+          <tr>
+            <td>${po.POHeader.PurchaseOrderNumber}</td>
+            <td>${formatNumber(po.POHeader.GrandTotalAfterTax)}</td>
+            <td style="text-align: center">
+              <button
+                type="button"
+                class="btn btn-info btn-sm"
+                click.delegate="expandedPOIndex = expandedPOIndex === $index ? null : $index"
+              >
+                <i class="fa fa-info"></i>
+              </button>
+            </td>
+          </tr>
+          <tr if.bind="expandedPOIndex === $index">
+            <td colspan="3">
+              <au-table
+                data.bind="po.POItems"
+                columns.bind="poItemsColumns"
+                options.bind="tableOptions"
+                sortable.bind="false"
+                page-size.bind="50"
+              >
+              </au-table>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <div if.bind="hasTax" style="margin-top: 10px" ref="taxContainer">
+    <au-table
+      data.bind="taxRows"
+      columns.bind="taxColumns"
+      options.bind="tableOptions"
+      sortable.bind="false"
+      page-size.bind="50"
+    >
+    </au-table>
+  </div>
+
+  <!-- <div if.bind="hasInvoice" style="margin-top:10px;" ref="invoiceContainer">
+        <au-table
+            data.bind="invoiceRows"
+            columns.bind="invoiceColumns"
+            options.bind="tableOptions"
+            sortable.bind="false"
+            page-size.bind="50">
+        </au-table>
+    </div> -->
+</template>

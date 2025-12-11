@@ -1,0 +1,27 @@
+<template>
+    <require from="./scan-result-item"></require>
+    <require from="./scan-result-support"></require>
+    
+    <div class="panel panel-default" if.bind="hasHeader || hasItems" ref="panel">
+        <div class="panel-body">
+            <au-table
+                element.ref="headerTableEl"
+                data.bind="headerData"
+                columns.bind="headerColumns"
+                options.bind="tableOptions"
+                sortbale.bind="false"
+                page-size.bind="50">
+            </au-table>
+
+            <div if.bind="showItems" style="margin-top:10px;" ref="itemsContainer">
+                <scan-result-item items.bind="items"></scan-result-item>
+            </div>
+        </div>
+    </div>
+
+    <div if.bind="hasHeader || hasItems" style="margin-top:10px;">
+        <scan-result-support result.bind="result" view-model.ref="supportRef"></scan-result-support>
+    </div>
+
+    <div style="height: 56px;"></div>
+</template>

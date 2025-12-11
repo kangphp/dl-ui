@@ -1,0 +1,20 @@
+<template>
+    <require from="../verification-spb-externaldocument/css/loader.css"></require>
+    <!-- Loader overlay for scanning/uploading -->
+    <div if.bind="isScanning" class="scan-loader-overlay-global">
+        <div class="scan-loader-spinner-global">
+            <i class="fa fa-spinner fa-spin" style="font-size:3rem;color:#0D2F56;"></i>
+            <div style="margin-top:16px;color:#0D2F56;font-weight:bold;font-size:1.2rem;">
+                Sedang Mengecek...
+            </div>
+        </div>
+    </div>
+    <require from="./data-form"></require>
+    <data-form title="Verifikasi SPB dan Dokumen Eksternal" error.bind="error" view-model.ref="dataFormRef"></data-form>
+
+    <!-- Floating action buttons at bottom-right of the create page -->
+    <div class="btn-group" style="position: fixed; right: 20px; bottom: 20px; z-index: 1000;">
+        <button class="btn btn-default" click.delegate="cancel($event)">Kembali</button>
+        <button class="btn btn-success" click.delegate="save($event)">Cek SPB</button>
+    </div>
+</template>
