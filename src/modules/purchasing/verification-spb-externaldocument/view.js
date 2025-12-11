@@ -205,36 +205,37 @@ export class View {
    * @returns {Object}
    */
 
-  @computedFrom("data")
+  @computedFrom(
+    "data.items",
+    "data.totalVatAmount",
+    "data.totalIncomeTaxAmount"
+  )
   get totalAmount() {
-    const safeData = this.safeData;
-    if (!safeData || !Array.isArray(safeData.items)) return 0;
-
-    const sumPriceTotal = safeData.items.reduce((sum, item) => {
-      if (
-        item &&
-        item.unitReceiptNote &&
-        Array.isArray(item.unitReceiptNote.items)
-      ) {
-        return (
-          sum +
-          item.unitReceiptNote.items.reduce((itemSum, subItem) => {
-            const price =
-              subItem && typeof subItem.PriceTotal === "number"
-                ? subItem.PriceTotal
-                : 0;
-            return itemSum + price;
-          }, 0)
-        );
+    if (!this.data || !Array.isArray(this.data.items)) return 0;
+    let sum = 0;
+    for (const item of this.data.items) {
+      if (item.unitReceiptNote && Array.isArray(item.unitReceiptNote.items)) {
+        for (const subItem of item.unitReceiptNote.items) {
+          const price =
+            typeof subItem.PriceTotalCorrection === "number"
+              ? subItem.PriceTotalCorrection
+              : typeof subItem.PriceTotal === "number"
+              ? subItem.PriceTotal
+              : 0;
+          sum += price;
+        }
       }
-      return sum;
-    }, 0);
+    }
+    const ppn =
+      typeof this.data.totalVatAmount === "number"
+        ? this.data.totalVatAmount
+        : 0;
+    const pph =
+      typeof this.data.totalIncomeTaxAmount === "number"
+        ? this.data.totalIncomeTaxAmount
+        : 0;
 
-    const ppn = safeData.totalVatAmount || 0;
-    const pph = safeData.totalIncomeTaxAmount || 0;
-    const total = sumPriceTotal + ppn + pph;
-
-    return total;
+    return sum + ppn + pph;
   }
 
   get safeData() {

@@ -25,8 +25,8 @@
 
     <au-comparison
       label="Nomor Invoice"
-      value1.bind="data.invoices.[0].invoiceNo"
-      value2.bind="data.invoices.[0].invoiceNoScanResult"
+      value1.bind="data.invoices && data.invoices[0] ? data.invoices[0].invoiceNo : ''"
+      value2.bind="data.invoices && data.invoices[0] ? data.invoices[0].invoiceNoScanResult : ''"
       label1="Data SPB"
       label2="Data Hasil Scan"
       highlight-differences.bind="highlightDifferencesInvoiceNo"
@@ -56,7 +56,7 @@
       options.bind="controlOptions"
     >
     </au-comparison>
-<!-- 
+    <!-- 
     <au-comparison
       label="DPP"
       value1.bind="data.dppValue"
