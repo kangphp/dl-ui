@@ -58,7 +58,7 @@ export class Upload {
         try {
             this.disabled = true;
             this.isScanning = true;
-            const result = await this.localService.uploadFile(this.selectedFile);
+            const result = await this.service.uploadFile(this.selectedFile);
             // Tampilkan alert dan hanya lanjut setelah OK ditekan
             alert('Hasil Scan Dokumen Berhasil');
             // kirim ke parent jika callback tersedia (setelah OK)
