@@ -153,7 +153,7 @@ export class Create {
         console.log("[Verifikasi SPB] File PDF yang dipilih:", file.name);
       }
 
-      const response = await this.localService.postCompareUPO(selected, {
+      const response = await this.service.postCompareUPO(selected, {
         scanResult: scanResultToSend ? JSON.stringify(scanResultToSend) : null,
         file: file,
       });
