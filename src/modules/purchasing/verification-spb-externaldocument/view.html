@@ -1,0 +1,188 @@
+<template>
+  <au-input-form title="Detail SPB" with.bind="context">
+    <au-comparison
+      label="Nomor SPB"
+      value1.bind="data.spbNo"
+      value2.bind="data.spbNoScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      highlight-differences.bind="highlightDifferencesSPBNo"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <au-comparison
+      label="Tanggal SPB"
+      value1.bind="cleanedSPBDate"
+      value2.bind="data.spbDateScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      format="date"
+      highlight-differences.bind="highlightDifferencesSPBDate"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <au-comparison
+      label="Nomor Invoice"
+      value1.bind="data.invoices && data.invoices[0] ? data.invoices[0].invoiceNo : ''"
+      value2.bind="data.invoices && data.invoices[0] ? data.invoices[0].invoiceNoScanResult : ''"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      highlight-differences.bind="highlightDifferencesInvoiceNo"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <au-comparison
+      label="Tanggal Faktur Pajak"
+      value1.bind="cleanedFakturPajakDate"
+      value2.bind="data.fakturPajakDateScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      format="date"
+      highlight-differences.bind="highlightDifferencesFakturPajakDate"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <au-comparison
+      label="No. Faktur Pajak"
+      value1.bind="data.fakturPajak"
+      value2.bind="data.fakturPajakScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      highlight-differences.bind="highlightDifferencesFakturPajak"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+    <!-- 
+    <au-comparison
+      label="DPP"
+      value1.bind="data.dppValue"
+      value2.bind="data.dppValueScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      format="0.00"
+      options.bind="controlOptions"
+    >
+    </au-comparison> -->
+
+    <au-comparison
+      label="Nilai PPN"
+      value1.bind="data.ppnValue"
+      value2.bind="data.ppnValueScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      format="0.00"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <au-comparison
+      label="Nilai PPH"
+      value1.bind="data.pphValue"
+      value2.bind="data.pphValueScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      format="0.00"
+      use-absolute.bind="true"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <au-comparison
+      label="Grand Total"
+      value1.bind="totalAmount"
+      value2.bind="data.totalSPbScanResult"
+      label1="Data SPB"
+      label2="Data Hasil Scan"
+      format="0.00"
+      options.bind="controlOptions"
+    >
+    </au-comparison>
+
+    <!-- Tabel khusus spbNo dan tombol 'i' -->
+    <au-table
+      data.bind="specialTableData"
+      columns.bind="[ { field: 'spbNo', title: 'Nomor SPB' }, { field: 'actions', title: '', formatter: actionFormatter } ]"
+      options.bind="tableOptions"
+      view-model.ref="specialTable"
+    >
+    </au-table>
+
+    <!-- Tabel items spb, muncul saat tombol 'i' diklik -->
+    <au-collection
+      if.bind="showItemsTable"
+      items.bind="itemsData"
+      columns.bind="itemsColumns"
+      read-only="true"
+      options.bind="{ control: { length: 12 } }"
+    >
+    </au-collection>
+
+    <!-- Tabel Nomor invoice, selalu tampil -->
+    <!-- <au-table
+      data.bind="filteredInvoices"
+      columns.bind="invoiceColumns"
+      options.bind="invoiceTableOptions"
+      view-model.ref="invoiceTable"
+    >
+    </au-table> -->
+
+    <!-- Tabel Nomor Bon Unit, selalu tampil -->
+    <au-table
+      data.bind="filteredURNs"
+      columns.bind="urnsColumns"
+      options.bind="urnTableOptions"
+      view-model.ref="urnTable"
+    >
+    </au-table>
+
+    <!-- Tabel Nomor PR, selalu tampil -->
+    <au-table
+      data.bind="filteredPRs"
+      columns.bind="prsColumns"
+      options.bind="prTableOptions"
+      view-model.ref="prTable"
+    >
+    </au-table>
+
+    <!-- Tabel Nomor PO, selalu tampil -->
+    <au-table
+      data.bind="filteredPOs"
+      columns.bind="posColumns"
+      options.bind="poTableOptions"
+      view-model.ref="poTable"
+    >
+    </au-table>
+
+    <au-collection
+      if.bind="showPOItemsTable"
+      items.bind="poItemsData"
+      columns.bind="poItemsColumns"
+      read-only="true"
+      options.bind="{ control: { length: 12 } }"
+    >
+    </au-collection>
+
+    <!-- <au-table
+      data.bind="filteredTax"
+      columns.bind="taxColumns"
+      options.bind="tableOptions"
+      view-model.ref="taxTable"
+    >
+    </au-table> -->
+
+    <div style="height: 56px"></div>
+    <div slot="actions" class="btn-group">
+      <button
+        class="btn btn-default"
+        click.delegate="cancel($event)"
+        if.one-way="hasCancel"
+      >
+        Kembali
+      </button>
+    </div>
+  </au-input-form>
+</template>

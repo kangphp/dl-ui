@@ -403,6 +403,21 @@ module.exports = [
         }
     },
     {
+        route: 'purchase-order/verification-spb-externaldocument',
+        name: 'verification-spb-externaldocument',
+        moduleId: './modules/purchasing/verification-spb-externaldocument/index',
+        nav: true,
+        title: 'Verifikasi SPB - Dokumen Eksternal',
+        auth: true,
+        settings: {
+            group: "purchasing",
+            subGroup: "monitoring",
+            
+            permission: { "E42": 1},
+            iconClass: 'fa fa-dashboard'
+        }
+    },
+    {
         route: 'po/reports/ketepatan/staff',
         name: 'purchase-order-reports-ketepatan-staff',
         moduleId: './modules/purchasing/reports/purchase-order-report/staff-report/index',
